@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Israel's VideoJS Demo</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link href="video-js.min.css" rel="stylesheet">
+</head>
+	<body>
+		<div class="container">
+			<div class="text-center">
+				<h3>Video.JS Demo</h3>
+			</div>
+			<div class="row">
+				<div class="jumbotron col-8 mx-auto text-center">
+					<video id="videoPlayer" class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
+						  controls preload="auto"
+						  poster="playlist-thumbnails/llamadrama.png"
+						  data-setup='{}'>
+
+						 <source src="http://amssamples.streaming.mediaservices.windows.net/634cd01c-6822-4630-8444-8dd6279f94c6/CaminandesLlamaDrama4K.ism/manifest(format=m3u8-aapl)" type="application/x-mpegURL" />
+						 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+					</video>
+					<div class="Player-Buttons mt-3">
+						<div class="row">
+							<button class="btn btn-primary btn-sm m-1" id="PIP">Picture-in-Picture</button>
+							<button class="btn btn-primary btn-sm m-1" id="play">Play</button>
+							<button class="btn btn-primary btn-sm m-1" id="pause">Pause</button>
+							<button class="btn btn-primary btn-sm m-1" id="fullscreen">Full Screen</button>
+							<button class="btn btn-primary btn-sm m-1" id="mute">Mute Audio</button>
+							<button class="btn btn-primary btn-sm m-1" id="unmute">Unmute Audio</button>
+							<div class="mt-2 ">
+								<label> Playback Rate: </label>
+								<div class="btn-group" role="group">
+									<button class="btn btn-primary btn-sm" onclick="playbackRate(0.5)">0.5</button>
+									<button class="btn btn-primary btn-sm" onclick="playbackRate(1)">1</button>
+									<button class="btn btn-primary btn-sm" onclick="playbackRate(1.5)">1.5</button>
+									<button class="btn btn-primary btn-sm" onclick="playbackRate(2)">2</button>
+								</div>
+							</div>
+						</div>
+						<p>Video Dimensions: <span id="resolution"><span id="resolutionWidth"></span>x<span id="resolutionHeight"</span></span></p>
+
+					</div>
+				</div>
+				<div class="playlist col-4 bg-light rounded" >
+					<h5>Playlist</h5>
+					 <ul class="list-group">
+						  <li class="list-group-item active" id="src1" onclick="PlaylistClicked('http://amssamples.streaming.mediaservices.windows.net/634cd01c-6822-4630-8444-8dd6279f94c6/CaminandesLlamaDrama4K.ism/manifest(format=m3u8-aapl)', 'application/x-mpegURL', 'playlist-thumbnails/llamadrama.png',this.id,'Caminandes Llama Drama Is an Animated film where a llama needs help getting across a road.' ,'' ,'Animated short film')">Llama Drama (HLS)</li>
+						  <li class="list-group-item " id="src2" onclick="PlaylistClicked('https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8', 'application/x-mpegURL', 'playlist-thumbnails/sintel.png',this.id,'Sintel is a short 15-minute movie made with computers using open source software. Blender was the main program used to make the movie. It began production in September 2009 and was released on September 28, 2010.' ,'Blender Foundation' ,'Fantasy short film')">Sintel (HLS)</li>
+						  <li class="list-group-item " id="src3" onclick="PlaylistClicked('https://dash.akamaized.net/dash264/TestCasesIOP41/CMAF/UnifiedStreaming/ToS_AVC_MultiRate_MultiRes_AAC_Eng_WebVTT.mpd', 'application/dash+xml', 'playlist-thumbnails/tears-of-steel.png',this.id,'Set in a dystopian future, the short film features a group of warriors and scientists who gather at the Oude Kerk in Amsterdam in a desperate attempt to save the world from destructive robots.' ,'Blender Foundation' ,' Short science fiction film')"> Tears of Steel (DASH)</li>
+						</ul>
+					<hr>
+					<div>
+						<h5>Description</h5>
+						<p id="description">
+							<span id="detailed-description">Caminandes Llama Drama Is an Animated film where a llama needs help getting across a road.</span>
+							<br>
+							<b>Production companies:</b> <span id="production-company">Blender Foundation</span>
+							<br>
+							<b>Genre:</b> <span id="genre-type">Animation | Short | Comedy | Family</span>
+						</p>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<footer class="text-center">
+		<span>Demo Created by Israel Lopez</span>
+	</footer>
+  </html>
+
+<script src="video.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+	window.onload = function init() {
+		var player = videojs('videoPlayer');
+		var pip = document.getElementById("PIP");
+		var play = document.getElementById("play");
+		var pause = document.getElementById("pause");
+		var fullscreen = document.getElementById("fullscreen");
+		var mute = document.getElementById("mute");
+		var unmute = document.getElementById("unmute");
+
+		pip.addEventListener("click", function() {
+			player.requestPictureInPicture();
+		});
+
+		play.addEventListener("click", function() {
+			player.play();
+		});
+
+		pause.addEventListener("click", function() {
+			player.pause();
+		});
+
+		fullscreen.addEventListener("click", function() {
+			player.requestFullscreen();
+		});
+		mute.addEventListener("click", function() {
+			player.muted(true);
+		});
+		unmute.addEventListener("click", function() {
+			player.muted(false);
+		});
+
+
+
+		// Get Video playback resolution
+		var w = 0;
+		var h = 0;;
+		var heightElement = document.getElementById('resolutionHeight');
+		var widthElement =	document.getElementById('resolutionWidth');
+
+		window.setInterval(function(){
+			w = player.videoWidth();
+			h = player.videoHeight();
+			heightElement.innerHTML = h;
+			widthElement.innerHTML = w;
+		}, 1000);
+	}
+	
+	function playbackRate(x){
+		if(x>0.1||x<2.1){
+			videojs('videoPlayer').playbackRate(x);
+		}
+	}
+
+	// PlaylistClicked has two functionalities
+	// 1: Change the video player's sources
+	// 2: Change the clicked video as active on the playlist.
+	function PlaylistClicked(source, type, poster, id , desc, prod, genre){
+	// Part 1: Video 
+		var player = videojs("videoPlayer");
+		// Set the video player poster
+		player.poster(poster);
+		// set the video player source and type
+		player.src([
+			{type: type, src: source},
+			]);
+	// Part 2:Front End.
+		var activeElements = document.getElementsByClassName('list-group-item active');
+		for (var i = 0; i < activeElements.length; i++) {
+			var current = activeElements[i];
+			current.className = current.className.replace(" active", "");
+		}
+		var clickedElement = document.getElementById(id);
+		clickedElement.className += " active";
+
+		//add playlist descriptions
+		document.getElementById('detailed-description').innerHTML = desc;
+		document.getElementById("production-company").innerHTML = prod
+		document.getElementById("genre-type").innerHTML = genre;
+		
+	}
+</script>
