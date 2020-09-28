@@ -1,127 +1,160 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>VideoJS Demo</title>
+	<title>Israel's VideoJS Demo</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 	<link href="video-js.min.css" rel="stylesheet">
 </head>
-<body>
-<div class="container" style="max-width: 90%;">
-	<div class="navbar justify-content-center">
-		<h3>Video.JS Demo</h3>
-	</div>
-	<div class="row">
-		<div class=" col-9 text-center">
-			<video id="videoPlayer" class="video-js vjs-default-skin vjs-fill vjs-big-play-centered"
-				   controls preload="auto"
-				   poster="playlist-thumbnails/spr.png"
-				   data-setup='{}'>
-
-				<source src="https://att-advavtech-output.s3.amazonaws.com/csula/At_S_SPR_1080p24.m3u8" type="application/x-mpegURL" />
-				<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-			</video>
-			<div class="Player-Buttons mt-3">
-						<span class="p-5">Video Resolution:
+	<body>
+		<div class="container" style="max-width: 90%;">
+			<div class="navbar justify-content-center">
+				<h3>Video.JS Demo</h3>
+			</div>
+			<div class="row">
+				<div class=" col-9 text-center">
+					<video id="videoPlayer" class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
+						  controls preload="none"
+						  poster="playlist-thumbnails/spr.png"
+						  data-setup='{}'>
+						 <source src="https://att-advavtech-output.s3.amazonaws.com/csula/At_S_SPR_1080p24.m3u8" type="application/x-mpegURL" />
+						 <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+					</video>
+					<div class="Player-Buttons mt-3">
+						<span class="px-5">Video Resolution: 
 							<span id="resolution">
 								<span id="resolutionWidth"></span>x
 								<span id="resolutionHeight"></span>
 							</span>
 						</span>
-				<span>Video Start Time:
+						<span>Video Start Time: 
 							<span id="vst">
 							</span>
 						</span>
+						<br>
+						<span class="px-5">Buffered Count: 0 
+							<span id="bufferedCount">
+							</span>
+						</span>
+						<span>Last Bufferd Duration: N/A
+							<span id="lastBufferedDuration">
+							</span>
+						</span>
+					</div>
+				</div>
+				<div class="col-3 rounded" >
+					<h5>Playlist</h5>
+					<style type="text/css">
+						.list-group-item{
+							padding-top: 5px;
+							padding-bottom: 5px;
+						}
+					</style>
+					 <ul class="list-group">
+			 				<h6>HLS</h6>
+						  <li class="list-group-item active" id="src1" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/At_S_SPR_1080p24.m3u8', 'application/x-mpegURL', 'playlist-thumbnails/spr.png',this.id,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' ,'Lorem ipsum ' ,'Lorem ipsum ')">Video 1 (HLS) - SPR</li>
+						  <li class="list-group-item" id="src2" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/PJMasks_1080p24.m3u8', 'application/x-mpegURL', 'playlist-thumbnails/pjmasks.png',this.id,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.' ,'Lorem ipsum  ' ,'Lorem ipsum ')">Video 2 (HLS) - PJ Masks</li>
+						  <li class="list-group-item" id="src3" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/CNN-2597-03-131.m3u8', 'application/x-mpegURL', 'playlist-thumbnails/cnn.png',this.id,'Lorem ipsum amet, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolsore aliqua.' ,' Lorem ipsum ' ,'Lorem ipsum ')">Video 3 (HLS) - CNN</li>
+			 			  <li class="list-group-item" id="src4" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/El_S_WVB_1080p60.m3u8', 'application/x-mpegURL', 'playlist-thumbnails/wvb.png',this.id,'Lorem ipsum amet, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolsore aliqua.' ,' Lorem ipsum ' ,'Lorem ipsum ')">Video 4 (HLS) - WVB</li>
+			 				<h6>DASH</h6>
+						  <li class="list-group-item disabled " id="src5" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/At_S_SPR_1080p24.mpd', 'application/dash+xml', 'playlist-thumbnails/spr.png',this.id,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' ,'Lorem ipsum ' ,'Lorem ipsum ')">Video 1 (DASH) - SPR </li>
+						  <li class="list-group-item disabled " id="src6" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/PJMasks_1080p24.mpd', 'application/dash+xml', 'playlist-thumbnails/pjmasks.png',this.id, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.' ,'Lorem ipsum  ' ,'Lorem ipsum ')">Video 2 (DASH) - PJ Masks </li>
+						  <li class="list-group-item disabled " id="src7" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/CNN-2597-03-131.mpd', 'application/dash+xml', 'playlist-thumbnails/cnn.png',this.id,'Lorem ipsum amet, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolsore aliqua.' ,' Lorem ipsum ' ,'Lorem ipsum ')">Video 3 (DASH) - CNN </li>
+						  <li class="list-group-item disabled " id="src8" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/El_S_WVB_1080p60.mpd', 'application/dash+xml', 'playlist-thumbnails/wvb.png',this.id,'Lorem ipsum amet, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolsore aliqua.' ,' Lorem ipsum ' ,'Lorem ipsum ')">Video 4 (DASH) - WVB </li>
+
+						</ul>
+					<hr>
+					<div>
+						<h6>Description</h6>
+						<p id="description">
+							<small id="detailed-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</small>
+							<br>
+							<b>Production companies:</b> <span id="production-company">Lorem ipsum</span>
+							<br>
+							<b>Genre:</b> <span id="genre-type">Lorem ipsum</span>
+						</p>
+						
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="col-3 rounded" >
-			<h5>Playlist</h5>
-			<style type="text/css">.list-group-item{
-				padding: 5px;
-				text-align: center;
-			}</style>
-			<ul class="list-group">
-				<h6>HLS</h6>
-				<li class="list-group-item active" id="src1" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/At_S_SPR_1080p24.m3u8', 'application/x-mpegURL', 'playlist-thumbnails/spr.png',this.id,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' ,'Lorem ipsum ' ,'Lorem ipsum ')">Video 1 (HLS) - SPR</li>
-				<li class="list-group-item " id="src2" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/PJMasks_1080p24.m3u8', 'application/x-mpegURL', 'playlist-thumbnails/pjmasks.png',this.id,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.' ,'Lorem ipsum  ' ,'Lorem ipsum ')">Video 2 (HLS) - PJ Masks</li>
-				<li class="list-group-item " id="src3" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/CNN-2597-03-131.m3u8', 'application/x-mpegURL', 'playlist-thumbnails/cnn.png',this.id,'Lorem ipsum amet, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolsore aliqua.' ,' Lorem ipsum ' ,'Lorem ipsum ')">Video 3 (HLS) - CNN</li>
-				<li class="list-group-item " id="src4" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/El_S_WVB_1080p60.m3u8', 'application/x-mpegURL', 'playlist-thumbnails/wvb.png',this.id,'Lorem ipsum amet, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolsore aliqua.' ,' Lorem ipsum ' ,'Lorem ipsum ')">Video 4 (HLS) - WVB</li>
-				<h6>DASH</h6>
-				<li class="list-group-item disabled" id="src5" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/At_S_SPR_1080p24.mpd', 'application/dash+xml', 'playlist-thumbnails/spr.png',this.id,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' ,'Lorem ipsum ' ,'Lorem ipsum ')">Video 1 (DASH) - SPR </li>
-				<li class="list-group-item disabled" id="src6" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/PJMasks_1080p24.mpd', 'application/dash+xml', 'playlist-thumbnails/pjmasks.png',this.id, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.' ,'Lorem ipsum  ' ,'Lorem ipsum ')">Video 2 (DASH) - PJ Masks </li>
-				<li class="list-group-item disabled" id="src7" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/CNN-2597-03-131.mpd', 'application/dash+xml', 'playlist-thumbnails/cnn.png',this.id,'Lorem ipsum amet, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolsore aliqua.' ,' Lorem ipsum ' ,'Lorem ipsum ')">Video 3 (DASH) - CNN </li>
-				<li class="list-group-item disabled" id="src8" onclick="PlaylistClicked('https://att-advavtech-output.s3.amazonaws.com/csula/El_S_WVB_1080p60.mpd', 'application/dash+xml', 'playlist-thumbnails/wvb.png',this.id,'Lorem ipsum amet, adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolsore aliqua.' ,' Lorem ipsum ' ,'Lorem ipsum ')">Video 4 (DASH) - WVB </li>
-			</ul>
-			<hr>
-			<div>
-				<h6>Description</h6>
-				<p id="description">
-					<small id="detailed-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</small>
-					<br>
-					<b>Production companies:</b> <span id="production-company">Lorem ipsum</span>
-					<br>
-					<b>Genre:</b> <span id="genre-type">Lorem ipsum</span>
-				</p>
+		<div style="width: 500px; height: 250px;">
+          <canvas id="myChart"></canvas>
+    	</div>
+	</body>
+  </html>
 
-			</div>
-		</div>
-	</div>
-</div>
-</body>
-</html>
+	<script src="video.js"></script>
+	<script type="text/javascript" src="Chart.js"></script>
+	<script type="text/javascript" src="VideoResolutionChart.js"></script>
+	<script type="text/javascript" src="videojs-event-tracking.js"></script>
 
-<script src="video.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
+
 	window.onload = function init() {
 		var player = videojs('videoPlayer');
-		// although the video tags have an ID of videoPlayer, we append '_html5_api'
-		// because VIDEO.JS changes the ID by appending that onto it.
 		var video = document.getElementById("videoPlayer_html5_api");
+
+		// Buffer Tracker
+		player.eventTracking({});
+    	player.on('tracking:buffered', (e, data) => console.log(data));
+		
 		// Get Video playback resolution
 		var heightElement = document.getElementById('resolutionHeight');
 		var widthElement = document.getElementById('resolutionWidth');
 		window.setInterval(function(){
-			heightElement.innerText = video.videoHeight;
-			widthElement.innerText = video.videoWidth;
+			    heightElement.innerText = video.videoHeight;
+   				widthElement.innerText = video.videoWidth;
 		}, 2000);
 
-		var t0 = 0;
+
+
+		// Calculate VST, get resolutions, and begin graphing resolutions. 
+		var chart_initialized = false;
+		var t0 = 0 ; 
 		var t1 = 0;
 		var seconds = 0 ;
 		// Track First Play
-		video.addEventListener('play', (event) => {
+		// on fitst play initialize the resolution chart and calculate vst. 
+		video.addEventListener('play', (event) => { 
 			t0 = performance.now();
+			if(!chart_initialized){
+				inititializeMyResolutionChart(document.getElementById('myChart'),document.getElementById("videoPlayer_html5_api"));
+				chart_initialized = true;
+			}else if(pauseResolutionInterval){
+				resumeResolutionInterval();
+			}
 		});
-
 		video.addEventListener("playing", function() {
 			t1 =  performance.now();
 			millis = t1-t0;
 			seconds = (millis / 1000.0).toFixed(4);
-			document.getElementById("vst").innerHTML = seconds  + " seconds" ;
-			seconds = 0 ;
-			t1=0;
-			t0=0;
+		    document.getElementById("vst").innerHTML = seconds  + " seconds" ;
+		    seconds = 0 ;
+		    t1=0;
+		    t0=0;
+        });
+        video.addEventListener("pause",function(){
+			clearResolutionInterval();        
 		});
 	}
-
+	
 	// PlaylistClicked has two functionalities
 	// 1: Change the video player's sources
-	// 2: Change the clicked video as active on the playlist.
+	// 2: Change the clicked video as active on the playlist and reset buffer count.
 	function PlaylistClicked(source, type, poster, id , desc, prod, genre){
-		// Part 1: Video
+	// Part 1: Video 
 		var player = videojs("videoPlayer");
 		// Set the video player poster
 		player.poster(poster);
 		// set the video player source and type
 		player.src([
 			{type: type, src: source},
-		]);
-		// Part 2:Front End.
+			]);
+	    // Part 2:Front End.
 		var activeElements = document.getElementsByClassName('list-group-item active');
 		for (var i = 0; i < activeElements.length; i++) {
 			var current = activeElements[i];
@@ -134,5 +167,6 @@
 		document.getElementById('detailed-description').innerHTML = desc;
 		document.getElementById("production-company").innerHTML = prod
 		document.getElementById("genre-type").innerHTML = genre;
+		bufferCount = 0;
 	}
 </script>

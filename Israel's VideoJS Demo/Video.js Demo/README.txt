@@ -22,6 +22,9 @@ Left click on 'Open with'
 Left Click on 'Google Chrome'.
 
 
+
+
+
 SAFARI NOTES:
 As of now the video player will support DASH and HLS on Google Chrome. 
 For IOS/Safari, DASH is not supported, for now this is a platform limitation. 
